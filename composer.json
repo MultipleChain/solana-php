@@ -1,0 +1,23 @@
+{
+    "name": "multiplechain/solana",
+    "version": "0.1.0",
+    "description": "Allows you to easily make requests to the Solana RPC API.",
+    "type": "library",
+    "license": "MIT",
+    "author": "MultipleChain",
+    "support": {
+        "issues": "https://github.com/MultipleChain/solana/issues"
+    },
+    "homepage": "https://github.com/MultipleChain/solana",
+    "require": {
+        "php": ">=7.4",
+        "phpseclib/phpseclib": "~2.0.11",
+        "ext-mbstring": "*",
+        "multiplechain/utils": "^0.1.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "MultipleChain\\Solana\\" : "src"
+        }
+    }
+}

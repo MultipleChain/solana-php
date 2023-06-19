@@ -52,9 +52,9 @@ final class Transaction
     }
 
     /**
-     * @return bool
+     * @return ?bool
      */
-    public function validate() : bool
+    public function validate() : ?bool
     {
         $this->getData();
         $result = null;

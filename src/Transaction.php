@@ -52,9 +52,9 @@ final class Transaction
     }
 
     /**
-     * @return ?bool
+     * @return bool
      */
-    public function getStatus() : ?bool
+    public function validate() : bool
     {
         $this->getData();
         $result = null;
@@ -73,17 +73,47 @@ final class Transaction
     }
 
     /**
-     * @return bool
+     * @return float
      */
-    public function validate() : bool
+    public function getTransactionAmount() : float 
     {
-        $result = $this->getStatus();
-        
-        if (is_bool($result)) {
-            return $result;
+        $this->getData();
+        if (!empty($this->data->meta->preTokenBalances)) {
+            $decimals = $this->data->meta->preTokenBalances[0]->uiTokenAmount->decimals;
+            $beforeBalance = $this->data->meta->preTokenBalances[0]->uiTokenAmount->uiAmount;
+            $afterBalance = $this->data->meta->postTokenBalances[0]->uiTokenAmount->uiAmount;
+            $diff = ($beforeBalance - $afterBalance);
+
+            if (!isset($this->data->meta->preTokenBalances[1])) {
+                $beforeBalance = $this->data->meta->preTokenBalances[0]->uiTokenAmount->uiAmount;
+                $afterBalance = $this->data->meta->postTokenBalances[1]->uiTokenAmount->uiAmount;
+                $diff = ($beforeBalance - $afterBalance);
+            } elseif ($diff < 0) {
+                $decimals = $this->data->meta->preTokenBalances[1]->uiTokenAmount->decimals;
+                $beforeBalance = $this->data->meta->preTokenBalances[1]->uiTokenAmount->uiAmount;
+                $afterBalance = $this->data->meta->postTokenBalances[1]->uiTokenAmount->uiAmount;
+                $diff = ($beforeBalance - $afterBalance);
+            }
+            
+            if ($diff < 0) {
+                $diff = floatval(number_format(abs($beforeBalance - $afterBalance), $decimals, '.', ""));
+            }
         } else {
-            return $this->validate();
+            $beforeBalance = $this->data->meta->preBalances[0];
+            $afterBalance = $this->data->meta->postBalances[0];
+            $diff =($afterBalance - $beforeBalance);
+            
+
+            if ($diff < 0) {
+                $beforeBalance = $this->data->meta->preBalances[1];
+                $afterBalance = $this->data->meta->postBalances[1];
+                $diff = Utils::toDec(($afterBalance - $beforeBalance), 9);
+            } else {
+                $diff = Utils::toDec(($afterBalance - $beforeBalance), 9);
+            }
         }
+
+        return $diff;
     }
 
     /**

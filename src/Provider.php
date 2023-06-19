@@ -85,6 +85,25 @@ final class Provider
     /**
      * @param string $method
      * @param array $params
+     * @return object
+     */
+    public function getLastTransactionByReceiver(string $receiver) 
+    {
+        $requestSignatures = $this->getSignaturesForAddress($receiver, [
+            "limit" => 1
+        ]);
+        
+        $transaction = $this->Transaction($requestSignatures[0]->signature);
+
+        return (object) [
+            "hash" => $transaction->getHash(),
+            "amount" => $transaction->getTransactionAmount()
+        ];
+    }
+
+    /**
+     * @param string $method
+     * @param array $params
      * @return mixed
      * @throws Exception
      */

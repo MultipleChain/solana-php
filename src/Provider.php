@@ -68,12 +68,14 @@ final class Provider
     private $randomKey;
 
     /**
-     * @param bool $testnet
-     * @param string|null $customRpc
+     * @param array|object $options
      * @throws Exception
      */
-    public function __construct(bool $testnet = false, string $customRpc = null) 
+    public function __construct($options) 
     {
+        $options = is_array($options) ? (object) $options : $options;
+        $testnet = isset($options->testnet) ? $options->testnet : false;
+        $customRpc = isset($options->customRpc) ? $options->customRpc : null;
         $this->network = (object) $this->networks[$testnet ? 'devnet' : 'mainnet'];
         if (!$testnet && $customRpc) {
             $this->network->host = $customRpc;

@@ -147,16 +147,20 @@ final class Provider
      */
     protected function validateResponse(object $response, string $method, array $params) : void
     {
-        if ($response->id !== $this->randomKey) {
-            throw new Exception('Invalid response');
+        if (isset($response->error)) {
+            if (is_object($response->error)) {
+                if ($response->error->code === $this->errorCodes['method-not-found']) {
+                    throw new Exception("API Error: Method {$method} not found.");
+                } else {
+                    throw new Exception($response->error->message);
+                }
+            } else {
+                throw new Exception($response->error);
+            }
         }
 
-        if (isset($response->error)) {
-            if ($response->error->code === $this->errorCodes['method-not-found']) {
-                throw new Exception("API Error: Method {$method} not found.");
-            } else {
-                throw new Exception($response->error->message);
-            }
+        if (isset($response->id) && $response->id !== $this->randomKey) {
+            throw new Exception('Invalid response');
         }
     }
 

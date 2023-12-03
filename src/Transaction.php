@@ -59,10 +59,12 @@ final class Transaction
         $this->getData();
         $result = null;
 
-        if ($this->data && is_null($this->data->meta->err)) {
-            $result = true;
-        } else {
-            $result = false;
+        if ($this->data) {
+            if ($this->data && is_null($this->data->meta->err)) {
+                $result = true;
+            } else {
+                $result = false;
+            }
         }
 
         return $result;

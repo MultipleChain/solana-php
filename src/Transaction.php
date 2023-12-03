@@ -60,7 +60,7 @@ final class Transaction
         $result = null;
 
         if ($this->data) {
-            if ($this->data && is_null($this->data->meta->err)) {
+            if (is_null($this->data->meta->err)) {
                 $result = true;
             } else {
                 $result = false;

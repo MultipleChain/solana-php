@@ -70,6 +70,11 @@ final class Transaction
         return $result;
     }
 
+    public function getFrom() {
+        $this->getData();
+        return $this->data->transaction->message->accountKeys[0];
+    }
+
     /**
      * @return float
      */

@@ -1,6 +1,6 @@
 {
     "name": "multiplechain/solana",
-    "version": "0.1.5",
+    "version": "0.1.6",
     "description": "Allows you to easily make requests to the Solana RPC API.",
     "type": "library",
     "license": "MIT",

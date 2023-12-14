@@ -75,10 +75,10 @@ final class Provider
     {
         $options = is_array($options) ? (object) $options : $options;
         $testnet = isset($options->testnet) ? $options->testnet : false;
-        $customRpc = isset($options->customRpc) ? $options->customRpc : null;
+        $rpcUrl = isset($options->rpcUrl) ? $options->rpcUrl : null;
         $this->network = (object) $this->networks[$testnet ? 'devnet' : 'mainnet'];
-        if (!$testnet && $customRpc) {
-            $this->network->host = $customRpc;
+        if (!$testnet && $rpcUrl) {
+            $this->network->host = $rpcUrl;
         }
 
         $this->randomKey = random_int(0, 99999999);
